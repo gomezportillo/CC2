@@ -1,0 +1,6 @@
+---
+- hosts: MVs
+  become: true
+  tasks:
+   - name: Install Docker
+     package: pkg=docker state=installed 
