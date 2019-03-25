@@ -2,7 +2,7 @@
 
 RES_GROUP=CC2
 VM_NAME=$1
-NS_GROUP=apolo_network_security_group
+NS_GROUP=ldapNSG
 
 az_output=$(az vm create \
     --resource-group $RES_GROUP \
