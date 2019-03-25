@@ -2,24 +2,29 @@
 
 ## Práctica 1
 
-1. Crear y configurar 2 MV
+1. Crear y configurar 3 MV
 
 ```bash
-make create-vm owncloud_vm
-install-owncloud-docker owncloud_vm
+make create-vm NAME=owncloudVM
+make install-owncloud-docker VM=owncloudVM
 
-make create-vm mysql_vm
-install-mysql-docker mysql_vm
+make create-vm NAME=mysqlVM
+make install-mysql-docker VM=mysqlVM
+
+make create-vm NAME=ldapVM
+make install-ldap-docker VM=ldapVM
 ```
 
 2. Configurar MySQL
+
 ```bash
 make connect-ssh IP=$MYSQL_IP
-docker logs mysql01 # para ver la contraseña autogenerada 
+docker logs mysql01 # para ver la contraseña autogenerada
 docker exec -it mysql01 mysql -uroot -p # metemos la contraseña de antes, para cambiarla ALTER USER 'root'@'localhost' IDENTIFIED BY 'newpassword';
 ```
 
 3. Crear la tabla para Owncloud
+
 ```mysql
 CREATE DATABASE IF NOT EXISTS owncloud;
 GRANT ALL PRIVILEGES ON owncloud.* TO 'root'@'localhost' IDENTIFIED BY 'password';
