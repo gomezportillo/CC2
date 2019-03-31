@@ -50,3 +50,7 @@ az container create --resource-group CC2 \
                     --image pedroma1/docker-mysql \
                     --ports 3306
 ```
+
+Ahora ya podemos acceder al servidor Owncloud y crear un configurarlo con la IP y los datos con los que hemos creado el contenedor de MySQL, además de crear un usuario y contraseña. Una vez hecho, seremos redirigidos a una página similar en la que podremos hacer login. Después de esto, ya podemos acceder a nuestros archivos.
+
+![Owncloud home](img/owncloud-home.jpg)
