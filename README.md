@@ -2,37 +2,51 @@
 
 ## Práctica 1
 
-1. Crear y configurar 3 MV
+### Crear y configurar 3 MV usando contenedores
+
+Aunque inicialmente se comenzó a realizar la práctica usando máquinas virtuales sobre las que correr Docker, se ha descubierto que se puede trabajar en Azure usando directamente contenedores, lo que es más rápido y barato.
+
+1. __Owncloud:__ Usaremos una imagen ya creada, por lo que basta escribir en la consola de Azure
 
 ```bash
-make create-vm NAME=owncloudVM
-make install-owncloud-docker VM=owncloudVM
-
-make create-vm NAME=mysqlVM
-make install-mysql-docker VM=mysqlVM
-
-make create-vm NAME=ldapVM
-make install-ldap-docker VM=ldapVM
+az container create --resource-group CC2 \
+                    --dns-name-label cc2-owncloud \
+                    --name ownclouddocker \
+                    --image owncloud \
+                    --ports 80
 ```
 
-2. Configurar MySQL
+2. __MySQL:__ Como las imágenes existentes no están correctamente configuradas, crearemos nosotros la nuestra, que puede verse en [Dockerfile-mysql](Dockerfile-mysql), y la siubiremos a DockerHub, como puede verse [en el siguiente enlace](https://hub.docker.com/r/pedroma1/docker-mysql), para poder importarla desde Azure.
+
+```dockerfile
+
+FROM ubuntu:latest
+
+WORKDIR /
+
+RUN apt-get update && \
+    apt-get install -y python-mysqldb mysql-server && \
+    service mysql start && \
+    mysql -e "CREATE DATABASE owncloud" && \
+    mysql -e "CREATE USER 'root'@'%' IDENTIFIED BY ''" && \
+    mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION" && \
+    sed -i 's/bind-address/#bind-address/' /etc/mysql/mysql.conf.d/mysqld.cnf && \
+    service mysql stop && \
+    chown -R mysql:mysql /var/run/mysqld
+
+VOLUME ["/var/lib/mysql"]
+
+EXPOSE 3306
+
+CMD ["mysqld_safe"]
+
+```
+Ahora, desde Azure creamos un contenedor con dicha imagen ejecutando:
 
 ```bash
-make connect-ssh IP=$MYSQL_IP
-docker logs mysql01 # para ver la contraseña autogenerada
-docker exec -it mysql01 mysql -uroot -p # metemos la contraseña de antes, para cambiarla ALTER USER 'root'@'localhost' IDENTIFIED BY 'newpassword';
+az container create --resource-group CC2 \
+                    --dns-name-label cc2-mysql \
+                    --name mysqldocker \
+                    --image pedroma1/docker-mysql \
+                    --ports 3306
 ```
-
-3. Crear la tabla para Owncloud
-
-```mysql
-CREATE DATABASE IF NOT EXISTS owncloud;
-GRANT ALL PRIVILEGES ON owncloud.* TO 'root'@'localhost' IDENTIFIED BY 'password';
-```
-
-4. Configurar el servidor owncloud con los valores obtenidos
-
-### Bibliografía
-
-* https://www.techrepublic.com/article/how-to-deploy-and-use-a-mysql-docker-container/
-* https://doc.owncloud.com/server/admin_manual/configuration/database/linux_database_configuration.html#mysql-mariadb-with-binary-logging-enabled
