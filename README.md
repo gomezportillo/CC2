@@ -54,3 +54,17 @@ az container create --resource-group CC2 \
 Ahora ya podemos acceder al servidor Owncloud y crear un configurarlo con la IP y los datos con los que hemos creado el contenedor de MySQL, además de crear un usuario y contraseña. Una vez hecho, seremos redirigidos a una página similar en la que podremos hacer login. Después de esto, ya podemos acceder a nuestros archivos.
 
 ![Owncloud home](img/owncloud-home.jpg)
+
+3. __LDAP.__ Lo primero que haremos será instalar el plugin de LDAP en Owncloud. Para eso, vamos al mercado de owncloud, buscamos la aplicación _LDAP Integration_ y la instalamos en nuestro servidor.
+
+![Plugin de LDAP](img/owncloud-ldap.jpg)
+
+Ahora, crearemos un contenedor en Azure con LDAP. Para ello, podemos usar la imagen vista en clase, `larrycai/openldap`, o la de Osixia, `osixia/openldap`. Como varios compañeros han tenido problemas con el primero, en este caso preventivamente usaremos el segundo, para lo que basta ejecutar en la terminal de Azure,
+
+```bash
+az container create --resource-group CC2 \
+                    --dns-name-label cc2-ldap \
+                    --name ldapdocker \
+                    --image osixia/openldap \
+                    --ports 389 636
+```
