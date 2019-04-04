@@ -55,14 +55,6 @@ Ahora ya podemos acceder al servidor Owncloud y crear un configurarlo con la IP 
 
 ![Owncloud home](img/owncloud-home.jpg)
 
-Si aparece el error
-
-```bash
-az container exec --resource-group CC2 \
-                  --name mysqldocker \
-                  --exec-command "/bin/bash"
-```
-
 3. __LDAP.__ Lo primero que haremos será instalar el plugin de LDAP en Owncloud. Para eso, vamos al mercado de owncloud, buscamos la aplicación _LDAP Integration_ y la instalamos en nuestro servidor.
 
 ![Plugin de LDAP](img/owncloud-ldap.jpg)
@@ -76,3 +68,5 @@ az container create --resource-group CC2 \
                     --image osixia/openldap \
                     --ports 389 636
 ```
+
+Ahora, para conectarnos al contenedor basta ejecutar `make connect-to-docker NAME=X`. 
