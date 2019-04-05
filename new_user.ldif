@@ -1,0 +1,16 @@
+dn: cn=pedro,ou=Users,dc=openstack,dc=org
+objectClass: top
+objectClass: account
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: pedro
+uid: pedro
+uidNumber: 16859
+gidNumber: 100
+homeDirectory: /home/pedro
+loginShell: /bin/bash
+gecos: pedro
+userPassword: pedro
+shadowLastChange: 0
+shadowMax: 0
+shadowWarning: 0

@@ -22,5 +22,5 @@ echo "IP de la VM $1: $IP"
     --name HTTP_rule \
     --protocol tcp \
     --priority 300 \
-    --destination-port-range 80 \
+    --destination-port-range 80 389 636 \
     --access allow >/dev/null

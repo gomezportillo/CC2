@@ -53,20 +53,16 @@ az container create --resource-group CC2 \
 
 Ahora ya podemos acceder al servidor Owncloud y crear un configurarlo con la IP y los datos con los que hemos creado el contenedor de MySQL, además de crear un usuario y contraseña. Una vez hecho, seremos redirigidos a una página similar en la que podremos hacer login. Después de esto, ya podemos acceder a nuestros archivos.
 
-![Owncloud home](img/owncloud-home.jpg)
+![Owncloud hokme](img/owncloud-home.jpg)
 
 3. __LDAP.__ Lo primero que haremos será instalar el plugin de LDAP en Owncloud. Para eso, vamos al mercado de owncloud, buscamos la aplicación _LDAP Integration_ y la instalamos en nuestro servidor.
 
 ![Plugin de LDAP](img/owncloud-ldap.jpg)
 
-Ahora, crearemos un contenedor en Azure con LDAP. Para ello, podemos usar la imagen vista en clase, `larrycai/openldap`, o la de Osixia, `osixia/openldap`. Como varios compañeros han tenido problemas con el primero, en este caso preventivamente usaremos el segundo, para lo que basta ejecutar en la terminal de Azure,
+Ahora llega el momento de crear el contenedor o la máquina virtual de LDAP. inicialmente se intentó seguir trabajando con contenedores, pero tras muchos intentos ha sido imposible trabajar con ellos, por lo que finalmente se ha obtado por usar una máquina virtual sobre la que ejecutar Docker. Para ello, podemos usar la imagen vista en clase, `larrycai/openldap`, o la de Osixia, `osixia/openldap`. Como varios compañeros han tenido problemas con el primero, en este caso preventivamente usaremos el segundo.
 
-```bash
-az container create --resource-group CC2 \
-                    --dns-name-label cc2-ldap \
-                    --name ldapdocker \
-                    --image osixia/openldap \
-                    --ports 389 636
-```
+Una vez creada usando el Makefile, deberíamos conectarnos a ella y crear un nuevo usuario usando el archivo [`new_user.ldif`](new_user.ldif), para lo que podemos o bien conectarnos por SSH con `make connect-to-vm IP=$(IP)`, clonar este repositorio y ejecutar `make add-ldap-user IP=localhost`, o directamente usando `make add-ldap-user IP=$(IP)`.
 
-Ahora, para conectarnos al contenedor basta ejecutar `make connect-to-docker NAME=X`. 
+Ahora deberemos configurar el servidor owncloud añadiendo las credenciales del administrador.
+
+![Configurando LDAP](img/owncloud-conf-ldap.jpg)

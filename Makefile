@@ -3,24 +3,28 @@ owncloud_NAME := ownclouddocker
 mysql_NAME 		:= mysqldocker
 ldap_NAME			:= ldapVM
 
-all:
+all: owncloud mysql ldap
+
+owncloud:
 	az container create --resource-group $(RG) \
 	                    --dns-name-label cc2-owncloud \
 	                    --name $(owncloud_NAME) \
 	                    --image owncloud \
 	                    --ports 80
 
+
+mysql:
 	az container create --resource-group $(RG) \
 	                    --dns-name-label cc2-mysql \
 	                    --name $(mysql_NAME) \
 	                    --image pedroma1/docker-mysql \
 	                    --ports 3306
 
+ldap:
 	sh create_vm.sh $(ldap_NAME)
-	sh run_command.sh "sudo docker pull larrycai/openldap && \
-	sudo docker run -d -p 389:389 --name ldap -t larrycai/openldap && \
+	sh run_command.sh "sudo docker pull osixia/openldap && \
+	sudo docker run -d -p 389:389 --name ldap -t osixia/openldap && \
 	sudo apt-get install ldap-utils" $(ldap_NAME)
-
 
 
 connect-to-container:
@@ -28,5 +32,10 @@ connect-to-container:
                     --name $(NAME) \
                     --exec-command "/bin/bash"
 
+
 connect-to-vm:
-	ssh azureuser@${IP}
+	ssh azureuser@$(IP)
+
+
+add-ldap-user:
+	ldapadd -H ldap://$(IP) -x -D "cn=admin,dc=openstack,dc=org" -w password -c -f new_user.ldif
