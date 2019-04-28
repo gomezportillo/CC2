@@ -27,6 +27,13 @@ ldap:
 	sudo apt-get install make ldap-utils" $(ldap_NAME)
 
 
+ldap-container:
+	az container create --resource-group $(RG) \
+	                    --dns-name-label cc2-ldap \
+	                    --name $(ldap_NAME) \
+	                    --image osixia/openldap \
+	                    --ports 389
+
 connect-to-container:
 	az container exec --resource-group $(RG) \
                     --name $(NAME) \
