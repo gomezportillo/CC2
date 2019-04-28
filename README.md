@@ -6,7 +6,7 @@
 
 Aunque inicialmente se comenzó a realizar la práctica usando máquinas virtuales sobre las que correr Docker, se ha descubierto que se puede trabajar en Azure usando directamente contenedores, lo que es más rápido y barato.
 
-1. __Owncloud:__ Usaremos una imagen ya creada, por lo que basta escribir en la consola de Azure
+1. __Owncloud:__ Usaremos una imagen ya creada, por lo que basta escribir en la consola de Azure,
 
 ```bash
 az container create --resource-group CC2 \
@@ -15,6 +15,8 @@ az container create --resource-group CC2 \
                     --image owncloud \
                     --ports 80
 ```
+
+O también podemos usar el makefile, para lo que basta ejecutar `make owncloud`.
 
 2. __MySQL:__ Como las imágenes existentes no están correctamente configuradas, crearemos nosotros la nuestra, que puede verse en [Dockerfile-mysql](Dockerfile-mysql), y la siubiremos a DockerHub, como puede verse [en el siguiente enlace](https://hub.docker.com/r/pedroma1/docker-mysql), para poder importarla desde Azure.
 
@@ -51,6 +53,8 @@ az container create --resource-group CC2 \
                     --ports 3306
 ```
 
+O también podemos usar el makefile, para lo que basta ejecutar `make mysql`.
+
 Ahora ya podemos acceder al servidor Owncloud y crear un configurarlo con la IP y los datos con los que hemos creado el contenedor de MySQL, además de crear un usuario y contraseña. Una vez hecho, seremos redirigidos a una página similar en la que podremos hacer login. Después de esto, ya podemos acceder a nuestros archivos.
 
 ![Owncloud hokme](img/owncloud-home.jpg)
@@ -59,10 +63,10 @@ Ahora ya podemos acceder al servidor Owncloud y crear un configurarlo con la IP 
 
 ![Plugin de LDAP](img/owncloud-ldap.jpg)
 
-Ahora llega el momento de crear el contenedor o la máquina virtual de LDAP. inicialmente se intentó seguir trabajando con contenedores, pero tras muchos intentos ha sido imposible trabajar con ellos, por lo que finalmente se ha obtado por usar una máquina virtual sobre la que ejecutar Docker. Para ello, podemos usar la imagen vista en clase, `larrycai/openldap`, o la de Osixia, `osixia/openldap`. Como varios compañeros han tenido problemas con el primero, en este caso preventivamente usaremos el segundo.
+Ahora llega el momento de crear el contenedor o la máquina virtual de LDAP. inicialmente se intentó seguir trabajando con contenedores, pero tras muchos intentos ha sido imposible trabajar con ellos, por lo que finalmente se ha obtado por usar una máquina virtual sobre la que ejecutar Docker. Para ello, podemos usar la imagen vista en clase, `larrycai/openldap`, o la de Osixia, `osixia/openldap`. Como varios compañeros han tenido problemas con el primero, en este caso preventivamente usaremos el segundo, para lo que basta ejecutar `make ldap`.
 
-Una vez creada usando el Makefile, deberíamos conectarnos a ella y crear un nuevo usuario usando el archivo [`new_user.ldif`](new_user.ldif), para lo que podemos o bien conectarnos por SSH con `make connect-to-vm IP=$(IP)`, clonar este repositorio y ejecutar `make add-ldap-user IP=localhost`, o directamente usando `make add-ldap-user IP=$(IP)`.
+Una vez creada usando el Makefile, deberíamos conectarnos a ella y crear un nuevo usuario usando el archivo [`new_user.ldif`](new_user.ldif), para lo que basta acceder a un ordenador con el paquete `ldap-utils` instalado para poder ejecutar el comando `ldapadd` y ejecutar `make add-ldap-users`.
 
-Ahora deberemos configurar el servidor owncloud añadiendo las credenciales del administrador.
+Ahora deberemos acceder al servidor owncloud y configurarlo añadiendo las credenciales del administrador del servidor LDAP.
 
 ![Configurando LDAP](img/owncloud-conf-ldap.jpg)
