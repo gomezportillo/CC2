@@ -45,4 +45,4 @@ connect-to-vm:
 
 
 add-ldap-user:
-	ldapadd -H ldap://$(IP) -x -D "cn=admin,dc=openstack,dc=org" -w admin -c -f new_user.ldif
+	ldapadd -H ldap://$(IP) -x -D "cn=admin,dc=example,dc=org" -w admin -c -f new_user.ldif
