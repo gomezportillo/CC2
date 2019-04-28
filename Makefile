@@ -1,7 +1,7 @@
 RG := CC2
 owncloud_NAME := ownclouddocker
 mysql_NAME 		:= mysqldocker
-ldap_NAME			:= ldapVM
+ldap_NAME			:= ldapdocker
 
 all: owncloud mysql ldap
 
@@ -20,19 +20,14 @@ mysql:
 	                    --image pedroma1/docker-mysql \
 	                    --ports 3306
 
+
 ldap:
-	sh create_vm.sh $(ldap_NAME)
-	sh run_command.sh "sudo docker pull osixia/openldap && \
-	sudo docker run -d -p 389:389 --name ldap -t osixia/openldap && \
-	sudo apt-get install make ldap-utils" $(ldap_NAME)
-
-
-ldap-container:
 	az container create --resource-group $(RG) \
 	                    --dns-name-label cc2-ldap \
 	                    --name $(ldap_NAME) \
 	                    --image osixia/openldap \
 	                    --ports 389
+
 
 connect-to-container:
 	az container exec --resource-group $(RG) \
