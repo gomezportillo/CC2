@@ -24,7 +24,7 @@ ldap:
 	sh create_vm.sh $(ldap_NAME)
 	sh run_command.sh "sudo docker pull osixia/openldap && \
 	sudo docker run -d -p 389:389 --name ldap -t osixia/openldap && \
-	sudo apt-get install ldap-utils" $(ldap_NAME)
+	sudo apt-get install make ldap-utils" $(ldap_NAME)
 
 
 connect-to-container:
