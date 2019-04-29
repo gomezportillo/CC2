@@ -41,3 +41,8 @@ connect-to-vm:
 
 add-ldap-user:
 	ldapadd -H ldap://$(IP) -x -D "cn=admin,dc=example,dc=org" -w admin -c -f new_user.ldif
+
+remove-all-containers:
+	az container delete -n $(owncloud_NAME) --resource-group $(RG) -y
+	az container delete -n $(mysql_NAME) --resource-group $(RG) -y
+	az container delete -n $(ldap_NAME) --resource-group $(RG) -y
