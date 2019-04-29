@@ -1,4 +1,4 @@
-dn: cn=pedro,ou=Users,dc=example,dc=org
+dn: cn=pedro,dc=example,dc=org
 objectClass: top
 objectClass: account
 objectClass: posixAccount
