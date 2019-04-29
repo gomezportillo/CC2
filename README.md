@@ -69,4 +69,11 @@ Una vez creada usando el Makefile, deberíamos conectarnos a ella y crear un nue
 
 Ahora deberemos acceder al servidor owncloud y configurarlo añadiendo las credenciales del administrador del servidor LDAP.
 
+```
+Host: x. Port: 389
+User DN: cn=admin,dc=example,dc=org
+Password: admin
+One Base DN per line: dc=example,dc=org
+```
+
 ![Configurando LDAP](img/owncloud-conf-ldap.jpg)
