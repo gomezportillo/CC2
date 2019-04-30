@@ -25,7 +25,7 @@ ldap:
 	az container create --resource-group $(RG) \
 	                    --dns-name-label cc2-ldap \
 	                    --name $(ldap_NAME) \
-	                    --image larrycai/openldap \
+	                    --image osixia/openldap \
 	                    --ports 389
 
 
@@ -39,12 +39,16 @@ connect-to-vm:
 	ssh azureuser@$(IP)
 
 
+add-ldap-ou:
+	ldapadd -H ldap://$(IP) -x -D cn=admin,dc=example,dc=org -w admin -c -f new_ou.ldif
+
+
 add-ldap-user:
-	ldapadd -H ldap://$(IP) -x -D "cn=admin,dc=openstack,dc=org" -w password -c -f new_user.ldif
+	ldapadd -H ldap://$(IP) -x -D cn=admin,dc=example,dc=org -w admin -c -f new_user.ldif
 
 
 search-ldap-users:
-	ldapsearch -H ldap://$(IP) -LL -b ou=Users,dc=openstack,dc=org -x
+	ldapsearch -H ldap://$(IP) -LL -b ou=Users,dc=example,dc=org -x
 
 
 remove-all-containers:
