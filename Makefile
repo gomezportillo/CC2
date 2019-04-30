@@ -45,3 +45,9 @@ add-ldap-user:
 
 search-ldap-users:
 	ldapsearch -H ldap://$(IP) -LL -b ou=Users,dc=openstack,dc=org -x
+
+
+remove-all-containers:
+	az container delete -n $(owncloud_NAME) --resource-group $(RG) -y
+	az container delete -n $(mysql_NAME) --resource-group $(RG) -y
+	az container delete -n $(ldap_NAME) --resource-group $(RG) -y
