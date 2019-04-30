@@ -25,7 +25,7 @@ ldap:
 	az container create --resource-group $(RG) \
 	                    --dns-name-label cc2-ldap \
 	                    --name $(ldap_NAME) \
-	                    --image osixia/openldap \
+	                    --image larrycai/openldap \
 	                    --ports 389
 
 
@@ -40,8 +40,8 @@ connect-to-vm:
 
 
 add-ldap-user:
-	ldapadd -H ldap://$(IP) -x -D "cn=admin,dc=example,dc=org" -w admin -c -f new_user.ldif
+	ldapadd -H ldap://$(IP) -x -D "cn=admin,dc=openstack,dc=org" -w password -c -f new_user.ldif
 
 
 search-ldap-users:
-	ldapsearch -H ldap://$(IP) -x -D "cn=admin,dc=example,dc=org" -w admin -b dc=example,dc=org
+	ldapsearch -H ldap://$(IP) -LL -b ou=Users,dc=openstack,dc=org -x
