@@ -71,9 +71,9 @@ Ahora deberemos acceder al servidor owncloud y configurarlo añadiendo las crede
 
 ```
 Host: ldap://IP. Port: 389
-User DN: cn=admin,dc=openstack,dc=org
-Password: password
-One Base DN per line: dc=openstack,dc=org
+User DN: cn=admin,dc=example,dc=org
+Password: admin
+One Base DN per line: dc=example,dc=org
 ```
 
 ![Configurando LDAP](img/owncloud-conf-ldap.jpg)
