@@ -48,8 +48,7 @@ add-ldap-user:
 
 
 search-ldap-users:
-	ldapsearch -H ldap://$(IP) -LL -b ou=Users,dc=example,dc=org -x
-
+	ldapsearch -H ldap://$(IP) -x -D "cn=admin,dc=example,dc=org" -w admin -b dc=example,dc=org
 
 remove-all-containers:
 	az container delete -n $(owncloud_NAME) --resource-group $(RG) -y
