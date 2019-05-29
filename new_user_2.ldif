@@ -1,0 +1,16 @@
+dn: cn=juan,ou=Users,dc=example,dc=org
+objectClass: top
+objectClass: account
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: juan
+uid: juan
+uidNumber: 16859
+gidNumber: 100
+homeDirectory: /home/juan
+loginShell: /bin/bash
+gecos: juan
+userPassword: juan
+shadowLastChange: 0
+shadowMax: 0
+shadowWarning: 0

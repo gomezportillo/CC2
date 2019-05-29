@@ -74,6 +74,8 @@ Host: ldap://IP. Port: 389
 User DN: cn=admin,dc=example,dc=org
 Password: admin
 One Base DN per line: dc=example,dc=org
+
+CN manual Query: (&(|(objectclass=account))(|(uid=%uid)(|(cn=%uid))))
 ```
 
 ![Configurando LDAP](img/owncloud-conf-ldap.jpg)
