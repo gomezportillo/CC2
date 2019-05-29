@@ -47,6 +47,10 @@ add-ldap-user:
 	ldapadd -H ldap://$(IP) -x -D cn=admin,dc=example,dc=org -w admin -c -f new_user.ldif
 
 
+add-ldap-user-2:
+	ldapadd -H ldap://$(IP) -x -D cn=admin,dc=example,dc=org -w admin -c -f new_user_2.ldif
+
+
 search-ldap-users:
 	ldapsearch -H ldap://$(IP) -x -D "cn=admin,dc=example,dc=org" -w admin -b dc=example,dc=org
 
